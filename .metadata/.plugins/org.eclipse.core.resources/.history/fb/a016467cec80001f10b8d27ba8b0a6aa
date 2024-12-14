@@ -1,0 +1,31 @@
+import org.junit.Test;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.junit.Assert;
+
+public class TesteCampoTreinamentoElementosAvancados {
+
+	@Test
+	public void testAlertSimples() {
+		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new FirefoxDriver();
+		//WebDriver driver = new InternetExplorerDriver();
+		//driver.manage().window().setSize(new Dimension(1200,765));
+		driver.manage().window().maximize();	
+		//System.get.Property serve para identificar qual é a pasta raiz do diretório do projeto Java.
+		driver.get("file:///" + System.getProperty("user.dir")+ "/src/main/resources/componentes.html");
+		driver.findElement(By.id("alert")).click();	
+		Alert alert = driver.switchTo().alert(); //sempre que um alerta surgir na tela, o selenium precisa mudar o foc. para isso utilizar o switchTo.alert().
+		String textoAlerta = alert.getText(); //para pegar o texto que tem na janela do alerta, utilizar o getText.
+		Assert.assertEquals("Alert Simples", textoAlerta);
+		alert.accept(); //accept é a ação de clicar no botão OK
+		driver.findElement(By.id("elementosForm:nome")).sendKeys(textoAlerta);
+		Assert.assertEquals(textoAlerta, driver.findElement(By.id("elementosForm:nome")).getAttribute("value"));	
+		driver.quit();
+		
+	}
+		
+	
+}

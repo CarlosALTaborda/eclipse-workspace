@@ -1,0 +1,202 @@
+import java.util.List;
+
+import org.junit.Assert;
+//import org.junit.Ignore;
+import org.junit.Test;
+import org.openqa.selenium.By;
+//import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+
+public class TesteCampoTreinamento {
+
+	@Test
+	public void testTextField() {
+		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new FirefoxDriver();
+		//WebDriver driver = new InternetExplorerDriver();
+		//driver.manage().window().setSize(new Dimension(1200,765));
+		driver.manage().window().maximize();	
+		//System.get.Property serve para identificar qual é a pasta raiz do diretório do projeto Java.
+		driver.get("file:///" + System.getProperty("user.dir")+ "/src/main/resources/componentes.html");		
+		//findElement(By.) é o responsável por identificar o elemento da tela. Podemos identificar um elemento por id, por name, ou por outro identificador.
+		driver.findElement(By.id("elementosForm:nome")).sendKeys("Texto do exemplo");
+		//assertEquals espera sempre uma string.
+		Assert.assertEquals("Texto do exemplo", driver.findElement(By.id("elementosForm:nome")).getAttribute("value"));
+		driver.quit();
+	}	
+	
+
+	@Test
+	public void testTextArea() {
+		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new FirefoxDriver();
+		//WebDriver driver = new InternetExplorerDriver();
+		//driver.manage().window().setSize(new Dimension(1200,765));
+		driver.manage().window().maximize();	
+		//System.get.Property serve para identificar qual é a pasta raiz do diretório do projeto Java.
+		driver.get("file:///" + System.getProperty("user.dir")+ "/src/main/resources/componentes.html");		
+		// /n pula linha
+		driver.findElement(By.id("elementosForm:sugestoes")).sendKeys("Texto do exemplo\nTexto do exemplo2\nTexto do exemplo3");
+		//getAttribute pega o valor de um elemento depois da ação anterior.
+		Assert.assertEquals("Texto do exemplo\nTexto do exemplo2\nTexto do exemplo3", driver.findElement(By.id("elementosForm:sugestoes")).getAttribute("value"));
+		driver.quit();
+	}	
+	
+	@Test
+	public void testRadioButton() {
+		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new FirefoxDriver();
+		//WebDriver driver = new InternetExplorerDriver();
+		//driver.manage().window().setSize(new Dimension(1200,765));
+		driver.manage().window().maximize();	
+		//System.get.Property serve para identificar qual é a pasta raiz do diretório do projeto Java.
+		driver.get("file:///" + System.getProperty("user.dir")+ "/src/main/resources/componentes.html");		
+		driver.findElement(By.id("elementosForm:sexo:0")).click();
+		//assertTrue ou assertFalse espera sempre um boleano.
+		//isSelected é a função utilizada para saber se um elemento foi selecionado ou não.
+		Assert.assertTrue(driver.findElement(By.id("elementosForm:sexo:0")).isSelected());
+		driver.quit();
+	}	
+	
+	@Test
+	public void testCheckBox() {
+		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new FirefoxDriver();
+		//WebDriver driver = new InternetExplorerDriver();
+		//driver.manage().window().setSize(new Dimension(1200,765));
+		driver.manage().window().maximize();	
+		//System.get.Property serve para identificar qual é a pasta raiz do diretório do projeto Java.
+		driver.get("file:///" + System.getProperty("user.dir")+ "/src/main/resources/componentes.html");		
+		driver.findElement(By.id("elementosForm:comidaFavorita:0")).click();
+		//assertTrue ou assertFalse espera sempre um boleano.
+		//isSelected é a função utilizada para saber se um elemento foi selecionado ou não.
+		Assert.assertTrue(driver.findElement(By.id("elementosForm:comidaFavorita:0")).isSelected());
+		driver.quit();
+	}
+	
+	
+	@Test
+	public void testInteragirCombo() {
+		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new FirefoxDriver();
+		//WebDriver driver = new InternetExplorerDriver();
+		//driver.manage().window().setSize(new Dimension(1200,765));
+		driver.manage().window().maximize();	
+		//System.get.Property serve para identificar qual é a pasta raiz do diretório do projeto Java.
+		driver.get("file:///" + System.getProperty("user.dir")+ "/src/main/resources/componentes.html");		
+		WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
+		Select combo = new Select(element);
+		//combo.selectByIndex(2); seleciona pelo ID do elemento
+		//combo.selectByValue("superior"); seleciona pelo value do elemento
+		combo.selectByVisibleText("Superior"); //seleciona pelo texto que aparece no combo do texto.
+		Assert.assertEquals("Superior", combo.getFirstSelectedOption().getText());
+		driver.quit();
+	}
+	
+	@Test
+	public void testValorTextosCombo() {
+		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new FirefoxDriver();
+		//WebDriver driver = new InternetExplorerDriver();
+		//driver.manage().window().setSize(new Dimension(1200,765));
+		driver.manage().window().maximize();	
+		//System.get.Property serve para identificar qual é a pasta raiz do diretório do projeto Java.
+		driver.get("file:///" + System.getProperty("user.dir")+ "/src/main/resources/componentes.html");		
+		WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
+		Select combo = new Select(element);
+		List<WebElement> options = combo.getOptions(); //getOptions pega todos os elementos do combo
+		Assert.assertEquals(8, options.size()); //ao criar um objetivo "options" a gente consegue interagir com vários outros métodos com ele, tipo size.
+		
+		boolean encontrou = false;
+		for(WebElement option:options) { //para fazer uma análise de valor dentro dessa lista, criamos um webelement option e herdamos do webelement List options (por isso usar ":")
+			if(option.getText().equals("Mestrado")) { //o getText vai pegar o texto e o equals vai buscar exatamente a palavra que buscamos.
+				encontrou = true; // como dissemos que isso iria retornar um boolean, o padrão é false, mas se entra no laço ele passa a ser "encontro = true".
+				break;
+			}
+		}
+		Assert.assertTrue(encontrou); //o assertTrue vai verificar se realmente a variável "encontrou" é true ou false.
+		driver.quit();
+	}
+	
+	@Test
+	public void testValorTextosComboMultiplo() {
+		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new FirefoxDriver();
+		//WebDriver driver = new InternetExplorerDriver();
+		//driver.manage().window().setSize(new Dimension(1200,765));
+		driver.manage().window().maximize();	
+		//System.get.Property serve para identificar qual é a pasta raiz do diretório do projeto Java.
+		driver.get("file:///" + System.getProperty("user.dir")+ "/src/main/resources/componentes.html");		
+		WebElement element = driver.findElement(By.id("elementosForm:esportes"));
+		Select combo = new Select(element);
+		combo.selectByVisibleText("Natacao"); //selectBy ele vai selecionar o que você está indicando
+		combo.selectByVisibleText("Corrida");
+		combo.selectByVisibleText("Karate");
+		combo.deselectByVisibleText("Natacao"); //deselectBy ele vai desmarcar o que você está indicando
+		
+		List<WebElement> allSelectedOption = combo.getAllSelectedOptions(); //getAllSelectedOptions serve para listar todos os valores selecionados.
+		Assert.assertEquals(2, allSelectedOption.size());
+		driver.quit();
+	}
+	
+	@Test
+	public void testBotao() {
+		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new FirefoxDriver();
+		//WebDriver driver = new InternetExplorerDriver();
+		//driver.manage().window().setSize(new Dimension(1200,765));
+		driver.manage().window().maximize();	
+		//System.get.Property serve para identificar qual é a pasta raiz do diretório do projeto Java.
+		driver.get("file:///" + System.getProperty("user.dir")+ "/src/main/resources/componentes.html");
+		WebElement botao = driver.findElement(By.id("buttonSimple")); //forma simples de clicar um objeto para se interagir com ele. Neste caso só é necessário criar um WebElement.
+		botao.click();
+		Assert.assertEquals("Obrigado!", botao.getAttribute("value"));
+		driver.quit();		
+	}
+	
+	@Test
+	//@Ignore é utilizado para skippar um teste.
+	public void testLink() {
+		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new FirefoxDriver();
+		//WebDriver driver = new InternetExplorerDriver();
+		//driver.manage().window().setSize(new Dimension(1200,765));
+		driver.manage().window().maximize();	
+		//System.get.Property serve para identificar qual é a pasta raiz do diretório do projeto Java.
+		driver.get("file:///" + System.getProperty("user.dir")+ "/src/main/resources/componentes.html");
+		driver.findElement(By.linkText("Voltar")).click();
+		Assert.assertEquals("Voltou!", 
+				driver.findElement(By.id("resultado")).getText());
+		driver.quit();	
+	}
+	
+	@Test
+	public void testBuscaTextoPagina() {
+		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new FirefoxDriver();
+		//WebDriver driver = new InternetExplorerDriver();
+		//driver.manage().window().setSize(new Dimension(1200,765));
+		driver.manage().window().maximize();	
+		//System.get.Property serve para identificar qual é a pasta raiz do diretório do projeto Java.
+		driver.get("file:///" + System.getProperty("user.dir")+ "/src/main/resources/componentes.html");
+		//System.out.println(driver.findElement(By.tagName("body")).getText()); //sysout faz com que ele imprima no console.
+		
+//		Assert.assertTrue(driver.findElement(By.tagName("body"))
+			//.getText().contains("Campo de Treinamento")); buscar pelo Body não é muito performático.
+		
+		Assert.assertEquals("Campo de Treinamento", 
+				driver.findElement(By.tagName("h3")).getText());
+		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...", 
+				driver.findElement(By.className("facilAchar")).getText());	
+			
+		driver.quit();	
+		
+	}
+	
+	
+	
+}
